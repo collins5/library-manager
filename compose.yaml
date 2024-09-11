@@ -1,10 +1,18 @@
 services:
   mysql:
-    image: 'mysql:latest'
+    container_name: 'db_server'
+    image: 'mysql:8.0'
     environment:
-      - 'MYSQL_DATABASE=mydatabase'
+      - 'MYSQL_DATABASE=library-manager_db'
       - 'MYSQL_PASSWORD=secret'
-      - 'MYSQL_ROOT_PASSWORD=verysecret'
-      - 'MYSQL_USER=myuser'
+      - 'MYSQL_ROOT_PASSWORD=secret'
+      - 'MYSQL_USER=stac'
     ports:
-      - '3306'
+      - '3300:3306'
+
+  adminer:
+    container_name: adminer_book
+    image: adminer
+    restart: always
+    ports:
+      - '8181:8080'
