@@ -1,18 +1,24 @@
 package de.stacdev.library_manager.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
+import java.util.Set;
 
 /**
  * @author Collins Souop
@@ -24,16 +30,24 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @Table(name = "ADDRESS")
+@EntityListeners(AuditingEntityListener.class)
 public class Address {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(
+            strategy = GenerationType.IDENTITY
+    )
     private Integer id;
-    private UUID user_id;
     private String street;
     private String city;
     private String postal_code;
     private String state;
     private String country;
+
+    @OneToOne(mappedBy = "address")
+    private User user;
+
+    @CreatedDate
     private LocalDateTime created_at;
+    @LastModifiedDate
     private LocalDateTime updated_at;
 }
