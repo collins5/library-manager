@@ -19,6 +19,7 @@ public class UserService {
 
     public UserDTO createUser(UserDTO userDTO) {
         User user = User.builder()
+                .id(userDTO.getUserId())
                 .firstName(userDTO.getFirstName())
                 .lastName(userDTO.getLastName())
                 .email(userDTO.getEmail())
@@ -41,6 +42,7 @@ public class UserService {
                         new UserNotFoundException(
                                 "User with ID: " + id + " not found"));
 
+        user.setId(userDTO.getUserId());
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
@@ -54,11 +56,12 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException(
                         "User with ID: " + id + " not found"
                 ));
-        userRepository.deleteById(user.getId());
+        userRepository.deleteById(id);
     }
 
     private UserDTO mapToDto(User user) {
         return UserDTO.builder()
+                .userId(user.getId())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .email(user.getEmail())
